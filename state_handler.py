@@ -1,3 +1,5 @@
+from sqlalchemy.sql import exists
+
 from db.user import User
 
 
@@ -13,21 +15,23 @@ class StateHandler():
 
     def handle_get_name(self, name):
         if name in self.chats_by_users:
-            self.sendLine('Name taken, please choose another.')
+            self.sendLine('Chat session for user %s already opened.' % name)
             return
+
+        if self.session.query(exists().where(User.name == name)).scalar():
+            self.model = self.session.query(User).filter_by(name=name).first()
+        else:
+            self.model = User(name)
+            self.model.set_password('1234556700000')  # TODO: don't store pwd itself, store salted hash
+            self.session.add(self.model)
 
         self.sendLine('Welcome, %s!' % (name, ))
         self.name = name
         self.chats_by_users[name] = self
+
         self.state = 'chat'
 
-        self.model = User(name)
-        self.model.set_password('1234556700000')
-        self.session.add(self.model)
-
-        print self.session.query(User).first()
-        #self.session.commit()
-
+        print [user.name for user in self.session.query(User).all()]
 
     def handle_get_password(self, password):
         pass

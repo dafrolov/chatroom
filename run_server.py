@@ -7,5 +7,7 @@ import db
 
 if __name__ == "__main__":
     # TODO optparse
-    reactor.listenTCP(8123, ChatFactory())
+    factory = ChatFactory()
+    reactor.listenTCP(8123, factory)
+    reactor.callLater(5, factory.startCommitLoop)
     reactor.run()
