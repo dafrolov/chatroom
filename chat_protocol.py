@@ -28,6 +28,23 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
             self.handle_state(line)
 
     def distribute_message(self, message, room=None):
-        for name, protocol in self.chats_by_users.iteritems():
-            if protocol != self and (not room or protocol.name in self.users_by_rooms[room]):
-                protocol.sendLine(message)
+        collocutors = self.users_by_rooms[room] if room else self.all_collocutors
+
+        if not collocutors:
+            self.sendLine("Nobody hears you.")
+            if not self.rooms:
+                self.sendLine("Please, create or enter a chat room.")
+            else:
+                self.sendLine("Please, wait for collocutors.")
+
+        for user in collocutors:
+            self.chats_by_users[user].sendLine(message)
+
+    @property
+    def all_collocutors(self):
+        selected_users = [users for users in self.users_by_rooms.itervalues() if self.name in users]
+        return reduce(set.union, map(set, selected_users), set()) - set([self.name])
+
+    @property
+    def rooms(self):
+        return [room for room, users in self.users_by_rooms.iteritems() if self.name in users]
