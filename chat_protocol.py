@@ -7,6 +7,7 @@ from state_handler import StateHandler
 class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
 
     def __init__(self, master):
+        self.session = master.session
         self.chats_by_users = master.chats_by_users
         self.users_by_rooms = master.users_by_rooms
 

@@ -5,6 +5,8 @@ See https://twistedmatrix.com/documents/13.1.0/core/howto/servers.html
 Main dependencies:
 - python 2.7.6
 - Twisted 14.0.2
+- sqlalchemy 0.9.8
+- sqlite3
 
 
 Usage:

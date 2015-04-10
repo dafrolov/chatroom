@@ -1,3 +1,4 @@
+from db.user import User
 
 
 class StateHandler():
@@ -20,9 +21,17 @@ class StateHandler():
         self.chats_by_users[name] = self
         self.state = 'chat'
 
+        self.model = User(name)
+        self.model.set_password('1234556700000')
+        self.session.add(self.model)
+
+        print self.session.query(User).first()
+        #self.session.commit()
+
+
     def handle_get_password(self, password):
         pass
 
-    def handle_chat(self, message):  # TODO: lowercase state names
+    def handle_chat(self, message):
         message = '<%s> %s' % (self.name, message)
         self.distribute_message(message)
