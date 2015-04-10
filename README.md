@@ -11,7 +11,7 @@ Usage:
 
 - starting server
 
-    $ python chat_server.py
+    $ python run_server.py
 
 - communicate with telnet
 
