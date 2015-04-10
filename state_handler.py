@@ -1,5 +1,3 @@
-from sqlalchemy.sql import exists
-
 from db.user import User
 
 
@@ -18,9 +16,8 @@ class StateHandler():
             self.sendLine('Chat session for user %s already opened.' % name)
             return
 
-        if self.session.query(exists().where(User.name == name)).scalar():
-            self.model = self.session.query(User).filter_by(name=name).first()
-        else:
+        self.model = self.session.query(User).filter_by(name=name).first()
+        if self.model is None:
             self.model = User(name)
             self.model.set_password('1234556700000')  # TODO: don't store pwd itself, store salted hash
             self.session.add(self.model)

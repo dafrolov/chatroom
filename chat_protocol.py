@@ -2,6 +2,8 @@ from twisted.protocols.basic import LineReceiver
 
 from command_handler import CommandHandler
 from state_handler import StateHandler
+from db.message import Message
+from db.room import Room
 
 
 class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
@@ -40,6 +42,10 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
 
         for user in collocutors:
             self.chats_by_users[user].sendLine(message)
+
+        message_model = Message(self.model.id, message)
+        message_model.rooms = self.session.query(Room).filter(Room.name.in_([room] if room else self.rooms)).all()
+        self.session.add(message_model)
 
     @property
     def all_collocutors(self):

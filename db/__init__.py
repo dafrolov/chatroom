@@ -6,7 +6,9 @@ engine = create_engine('sqlite:///chatroom.db', echo=True)
 Base = declarative_base()
 
 
+import relations
 import user
-
+import room
+import message
 
 Base.metadata.create_all(engine)

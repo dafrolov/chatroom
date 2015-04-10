@@ -1,3 +1,4 @@
+from db.room import Room
 
 
 class CommandHandler():
@@ -18,6 +19,11 @@ class CommandHandler():
             result = method(params)
 
     def handle_join_room(self, room):
+        room_model = self.session.query(Room).filter_by(name=room).first()
+        if room_model is None:
+            room_model = Room(room)
+            self.session.add(room_model)
+
         if room not in self.users_by_rooms:
             self.users_by_rooms[room] = [self.name]
             self.sendLine('You created room %s' % room)
