@@ -31,7 +31,7 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
             self.handle_state(line)
 
     def distribute_message(self, message, room=None):
-        collocutors = self.users_by_rooms[room] if room else self.all_collocutors
+        collocutors = self.collocutors_by_room(room) if room else self.all_collocutors
 
         if not collocutors:
             self.sendLine("Nobody could hear you.")
@@ -46,6 +46,9 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
         message_model = Message(self.model.id, message)
         message_model.rooms = self.session.query(Room).filter(Room.name.in_([room] if room else self.rooms)).all()
         self.session.add(message_model)
+
+    def collocutors_by_room(self, room):
+        return set(self.users_by_rooms[room]) - set([self.name])
 
     @property
     def all_collocutors(self):
