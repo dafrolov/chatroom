@@ -1,10 +1,6 @@
 from optparse import OptionParser
 
-from twisted.internet import reactor
-
-from chat_factory import ChatFactory
-
-import db
+from server import Server
 
 
 if __name__ == "__main__":
@@ -28,8 +24,4 @@ if __name__ == "__main__":
 
     options, args = parser.parse_args()
 
-    factory = ChatFactory()
-    reactor.listenTCP(options.port, factory, interface=options.address)
-    reactor.callLater(5, factory.startCommitLoop)
-
-    reactor.run()
+    Server(options).run()
