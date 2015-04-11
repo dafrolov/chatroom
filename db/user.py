@@ -9,12 +9,16 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
-    password = Column(String)
+    salt = Column(String)
+    hash = Column(String)
 
     messages = relationship('Message', backref='user', lazy='dynamic')
 
     def __init__(self, name):
         self.name = name
 
-    def set_password(self, password):
-        self.password = password
+    def set_salt(self, salt):
+        self.salt = salt
+
+    def set_hash(self, hash):
+        self.hash = hash

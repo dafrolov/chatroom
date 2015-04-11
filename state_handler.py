@@ -1,3 +1,6 @@
+import uuid
+import hashlib
+
 from db.user import User
 
 
@@ -29,17 +32,20 @@ class StateHandler():
             self.state = 'check_password'
             self.sendLine('Enter password for %s' % self.name)
 
-
         print [user.name for user in self.session.query(User).all()]
 
     def handle_set_password(self, password):
-        self.model.set_password(password)  # TODO: don't store pwd itself, store salted hash
+        user_salt = self.get_salt()
+        self.model.set_salt(user_salt)
+        user_hash = self.get_salted_hash(password)
+        self.model.set_hash(user_hash)
+
         self.state = 'chat'
         self.sendLine('Registered username %s' % (self.name, ))
         self.sendLine('Welcome, %s!' % (self.name, ))
 
     def handle_check_password(self, password):
-        if self.model.password == password:
+        if self.get_salted_hash(password) == self.model.hash:
             self.state = 'chat'
             self.sendLine('Welcome, %s!' % (self.name, ))
         else:
@@ -48,3 +54,13 @@ class StateHandler():
     def handle_chat(self, message):
         message = '<%s> %s' % (self.name, message)
         self.distribute_message(message)
+
+    def get_salt(self):
+        return uuid.uuid4().hex
+
+    def get_hash(self, value):
+        return hashlib.sha512(value).hexdigest()
+
+    def get_salted_hash(self, password):
+        h = self.get_hash
+        return h(h(password) + self.model.salt)
