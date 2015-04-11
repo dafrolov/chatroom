@@ -17,7 +17,7 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
         self.state = 'get_name'
 
     def connectionMade(self):
-        self.sendLine("What's your name?")
+        self.sendLine("Login:")
 
     def connectionLost(self, reason):
         if self.name in self.chats_by_users:
@@ -34,7 +34,7 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
         collocutors = self.users_by_rooms[room] if room else self.all_collocutors
 
         if not collocutors:
-            self.sendLine("Nobody hears you.")
+            self.sendLine("Nobody could hear you.")
             if not self.rooms:
                 self.sendLine("Please, create or enter a chat room.")
             else:

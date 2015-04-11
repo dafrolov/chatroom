@@ -16,7 +16,7 @@ class StateHandler():
 
     def handle_get_name(self, name):
         if name in self.chats_by_users:
-            self.sendLine('Chat session for user %s already opened.' % name)
+            self.sendLine('Chat session for user %s has been already opened.' % name)
             return
 
         self.name = name
@@ -27,10 +27,11 @@ class StateHandler():
             self.model = User(name)
             self.session.add(self.model)
             self.state = 'set_password'
-            self.sendLine('Set password for %s' % self.name)
+            self.sendLine('Unregistered user %s.' % self.name)
+            self.sendLine('Set password for %s to login with this nickname:' % self.name)
         else:
             self.state = 'check_password'
-            self.sendLine('Enter password for %s' % self.name)
+            self.sendLine('Enter password for %s:' % self.name)
 
         print [user.name for user in self.session.query(User).all()]
 
@@ -41,15 +42,15 @@ class StateHandler():
         self.model.set_hash(user_hash)
 
         self.state = 'chat'
-        self.sendLine('Registered username %s' % (self.name, ))
-        self.sendLine('Welcome, %s!' % (self.name, ))
+        self.sendLine('Registered username %s.' % self.name)
+        self.sendLine('You are logged in as %s.' % self.name)
 
     def handle_check_password(self, password):
         if self.get_salted_hash(password) == self.model.hash:
             self.state = 'chat'
-            self.sendLine('Welcome, %s!' % (self.name, ))
+            self.sendLine('You are logged in as %s.' % self.name)
         else:
-            self.sendLine('Incorrect password, try again:')
+            self.sendLine('Incorrect password for %s, try again:' % self.name)
 
     def handle_chat(self, message):
         message = '<%s> %s' % (self.name, message)
