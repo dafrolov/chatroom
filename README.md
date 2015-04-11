@@ -13,7 +13,7 @@ Usage:
 
 - starting server
 
-    $ python run_server.py
+    $ python run.py -a[address] -p[port]
 
 - communicate with telnet
 
