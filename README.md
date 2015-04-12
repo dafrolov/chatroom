@@ -20,31 +20,35 @@ Usage:
     $ python client.py -a[address] -p[port]
 
 - register new user
-
-    Simple Chat Client v0.1
-    Login:
-    Alice
-    Nickname Alice is free.
-    Set password for user Alice to register it:
-    123456
-    Registered username Alice.
-    You are logged in as Alice.
+```
+Simple Chat Client v0.1
+Login:
+Alice
+Nickname Alice is free.
+Set password for user Alice to register it:
+123456
+Registered username Alice.
+You are logged in as Alice.
+```
 
 - login existing user
-
-    Simple Chat Client v0.1
-    Login:
-    Alice
-    Enter password for Alice:
-    123456
-    You are logged in as Alice.
+```
+Simple Chat Client v0.1
+Login:
+Alice
+Enter password for Alice:
+123456
+You are logged in as Alice.
+```
 
 - create a room
-
-    \join_room MyRoom
-    You created room MyRoom
+```
+\join_room MyRoom
+You created room MyRoom
+```
 
 - left room
-
-    \left_room MyRoom
-    You left room MyRoom 
+```
+\left_room MyRoom
+You left room MyRoom
+```
