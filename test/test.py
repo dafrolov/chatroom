@@ -29,10 +29,6 @@ class ClientProtocol(Protocol):
 class ClientFactory(Factory):
     def __init__(self):
         self.output_buffer = []
-        self.input_buffer = [
-            'Alice',
-            '123456',
-        ]
 
     def buildProtocol(self, addr):
         p = ClientProtocol()
@@ -61,6 +57,10 @@ class TestChat(unittest.TestCase):
 
         self.make_client()
         self.set_client()
+        self.client.input_buffer = [
+            'Alice',
+            '123456',
+        ]
 
         reactor.run()
 

@@ -1,6 +1,9 @@
 import unittest
 import sys
 
+import config
+config.testing = True
+
 
 def main():
     suite = unittest.TestLoader().discover('./test')
