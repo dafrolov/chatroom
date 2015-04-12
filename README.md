@@ -15,19 +15,36 @@ Usage:
 
     $ python run.py -a[address] -p[port]
 
-- communicate with telnet
+- starting client
 
-    $ telnet 127.0.0.1 8123
-    Trying 127.0.0.1...
-    Connected to 127.0.0.1.
-    Escape character is '^]'.
-    What's your name?
-    test
-    Name taken, please choose another.
-    bob
-    Welcome, bob!
-    hello
-    <alice> hi bob
-    twisted makes writing servers so easy!
-    <alice> I couldn't agree more
-    <carrol> yeah, it's great
+    $ python client.py -a[address] -p[port]
+
+- register new user
+
+    Simple Chat Client v0.1
+    Login:
+    Alice
+    Nickname Alice is free.
+    Set password for user Alice to register it:
+    123456
+    Registered username Alice.
+    You are logged in as Alice.
+
+- login existing user
+
+    Simple Chat Client v0.1
+    Login:
+    Alice
+    Enter password for Alice:
+    123456
+    You are logged in as Alice.
+
+- create a room
+
+    \join_room MyRoom
+    You created room MyRoom
+
+- left room
+
+    \left_room MyRoom
+    You left room MyRoom 
