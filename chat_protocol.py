@@ -24,7 +24,7 @@ class ChatProtocol(LineReceiver, StateHandler, CommandHandler):
             del self.chats_by_users[self.name]
 
     def lineReceived(self, line):
-        if line.startswith('\\'):
+        if self.state == 'chat' and line.startswith('\\'):
             line = line.lstrip('\\')
             self.handle_command(line)
         else:

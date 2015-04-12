@@ -17,6 +17,7 @@ class StateHandler():
     def handle_get_name(self, name):
         if name in self.chats_by_users:
             self.sendLine('Chat session for user %s has been already opened.' % name)
+            self.sendLine("Login:")
             return
 
         self.name = name
@@ -27,8 +28,8 @@ class StateHandler():
             self.model = User(name)
             self.session.add(self.model)
             self.state = 'set_password'
-            self.sendLine('Unregistered user %s.' % self.name)
-            self.sendLine('Set password for %s to login with this nickname:' % self.name)
+            self.sendLine('Nickname %s is free.' % self.name)
+            self.sendLine('Set password for user %s to register it:' % self.name)
         else:
             self.state = 'check_password'
             self.sendLine('Enter password for %s:' % self.name)
